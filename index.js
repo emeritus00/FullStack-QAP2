@@ -1,4 +1,4 @@
-const { getQuestion } = require("./utils/mathUtilities");
+const { getQuestion, isCorrectAnswer } = require("./utils/mathUtilities");
 const express = require("express");
 const app = express();
 const port = 3000;
@@ -22,6 +22,19 @@ app.get("/quiz", (req, res) => {
 app.post("/quiz", (req, res) => {
   const { answer } = req.body;
   console.log(`Answer: ${answer}`);
+  const question = req.body.question;
+
+  if (isCorrectAnswer(question, answer)) {
+    streak++;
+    res.redirect("/quiz");
+  } else {
+    streak = 0; // Reset streak on wrong answer
+    res.render("quiz", {
+      question,
+      streak,
+      errorMessage: "Incorrect answer! Try again.",
+    });
+  }
 
   //answer will contain the value the user entered on the quiz page
   //Logic must be added here to check if the answer is correct, then track the streak and redirect properly

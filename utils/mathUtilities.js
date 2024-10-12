@@ -20,7 +20,8 @@ function getQuestion() {
  * @returns {boolean} True if the answer was correct, false otherwise.
  */
 function isCorrectAnswer(question, answer) {
-  return false;
+  const result = eval(question);
+  return Math.abs(result - parseFloat(answer)) < 0.001; // To handle small float inaccuracies
 }
 
 module.exports = {
