@@ -1,0 +1,13 @@
+<%- include('partials/header') %>
+<main class="main-content">
+  <h1>Leaderboards</h1>
+  <ul>
+    <% leaderboard.forEach(function(entry, index) { %>
+      <li><%= index + 1 %> - Streak: <%= entry.streak %> (Obtained on <%= entry.date %>)</li>
+    <% }) %>
+  </ul>
+
+  <a href="/" class="btn">Back to Home</a>
+</main>
+</body>
+</html>
