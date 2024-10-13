@@ -10,13 +10,17 @@ app.use(express.static("public"));
 let streak = 0;
 let leaderboard = [];
 
+// Home page
 app.get("/", (req, res) => {
-  res.render("index", { streak });
+  const highestStreak = leaderboard.length > 0 ? leaderboard[0].streak : 0;
+
+  res.render("index", { streak, highestStreak });
 });
 
+//Quiz and generate question
 app.get("/quiz", (req, res) => {
   const question = getQuestion();
-  res.render("quiz", { question, streak, errorMessage: null });
+  res.render("quiz", { question, streak });
 });
 
 //Handles quiz submissions.
@@ -27,17 +31,16 @@ app.post("/quiz", (req, res) => {
     streak++;
     res.redirect("/quiz");
   } else {
-    // Save the current streak to the leaderboard before resetting it
     leaderboard.push({ streak, date: new Date().toLocaleDateString() });
 
-    // Sort leaderboard by streak in descending order and keep only top 10
     leaderboard = leaderboard.sort((a, b) => b.streak - a.streak).slice(0, 10);
 
-    streak = 0; // Reset streak on wrong answer
-    res.redirect("/leaderboards"); // Redirect to the leaderboards page
+    streak = 0;
+    res.redirect("/leaderboards");
   }
 });
 
+// Leaderboard Page
 app.get("/leaderboards", (req, res) => {
   res.render("leaderboards", { leaderboard });
 });

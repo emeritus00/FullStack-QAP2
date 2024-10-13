@@ -2,12 +2,10 @@
 <%- include('partials/header') %>
     <main class="main-content index_container">
         <h1>Welcome to the Math Competition App</h1>
-
         <p>Your current streak: <%= streak %></p>
         <% if (streak === 0) { %>
             <p>No current streak. Try to start a new quiz and build your streak!</p>
         <% } %>
-        
         <div class="navigation__container">
             <a href="/leaderboards">
                 View Leaderboards
@@ -16,6 +14,9 @@
                 Start Quiz
             </a>
         </div>
+
+        <p>Highest streak on the leaderboard: <%= highestStreak %></p>
+
     </main>
 </body>
 </html>
