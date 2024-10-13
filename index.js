@@ -13,7 +13,6 @@ let leaderboard = [];
 // Home page
 app.get("/", (req, res) => {
   const highestStreak = leaderboard.length > 0 ? leaderboard[0].streak : 0;
-
   res.render("index", { streak, highestStreak });
 });
 
@@ -32,9 +31,7 @@ app.post("/quiz", (req, res) => {
     res.redirect("/quiz");
   } else {
     leaderboard.push({ streak, date: new Date().toLocaleDateString() });
-
     leaderboard = leaderboard.sort((a, b) => b.streak - a.streak).slice(0, 10);
-
     streak = 0;
     res.redirect("/leaderboards");
   }
