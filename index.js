@@ -4,10 +4,9 @@ const app = express();
 const port = 3000;
 
 app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true })); // For parsing form data
-app.use(express.static("public")); // To serve static files (e.g., CSS)
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
-//Some routes required for full functionality are missing here. Only get routes should be required
 let streak = 0;
 let leaderboard = [];
 
@@ -28,20 +27,15 @@ app.post("/quiz", (req, res) => {
     streak++;
     res.redirect("/quiz");
   } else {
+    // Save the current streak to the leaderboard before resetting it
+    leaderboard.push({ streak, date: new Date().toLocaleDateString() });
+
+    // Sort leaderboard by streak in descending order and keep only top 10
+    leaderboard = leaderboard.sort((a, b) => b.streak - a.streak).slice(0, 10);
+
     streak = 0; // Reset streak on wrong answer
-    res.redirect("/");
-
-    // streak = 0; // Reset streak on wrong answer
+    res.redirect("/leaderboards"); // Redirect to the leaderboards page
   }
-  //answer will contain the value the user entered on the quiz page
-  //Logic must be added here to check if the answer is correct, then track the streak and redirect properly
-  //By default we'll just redirect to the homepage again.
-});
-
-app.get("/quiz", (req, res) => {
-  leaderboard.push({ streak, date: new Date().toLocaleDateString() });
-  leaderboard = leaderboard.sort((a, b) => b.streak - a.streak).slice(0, 10); // Top 10
-  res.render("quiz", { streak });
 });
 
 app.get("/leaderboards", (req, res) => {
